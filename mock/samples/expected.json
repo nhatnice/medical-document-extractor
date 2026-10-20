@@ -1,0 +1,152 @@
+{
+  "_readme": "Đáp án kỳ vọng cho 10 mock PDF. confidence_band: high (>=0.85), medium (0.5-0.84), low (<0.5), dùng để kiểm tra confidence có ý nghĩa. value null = field không có trên tài liệu, phải trả null (không bịa). validation_errors_expected = các lỗi pipeline phải phát hiện.",
+  "receipt_01_sunrise_bill.pdf": {
+    "document_type": "receipt",
+    "fields": {
+      "hospital_name": {"value": "Sunrise Medical Center", "confidence_band": "high"},
+      "patient_name": {"value": "Nguyen Van An", "confidence_band": "high"},
+      "date": {"value": "2026-03-15", "confidence_band": "high", "note": "MM/DD/YYYY, 15 không thể là tháng nên không mơ hồ"},
+      "items": {"value": [
+        {"description": "Consultation fee - General", "quantity": 1, "unit_price": 500000, "total": 500000},
+        {"description": "Blood test panel (CBC)", "quantity": 2, "unit_price": 150000, "total": 300000},
+        {"description": "X-ray, chest (PA view)", "quantity": 1, "unit_price": 250000, "total": 250000}
+      ], "confidence_band": "high"},
+      "grand_total": {"value": 1050000, "confidence_band": "high"},
+      "payment_method": {"value": "Cash", "confidence_band": "high"}
+    },
+    "validation_errors_expected": []
+  },
+  "receipt_02_stmary_statement.pdf": {
+    "document_type": "receipt",
+    "fields": {
+      "hospital_name": {"value": "St. Mary Clinic", "confidence_band": "high"},
+      "patient_name": {"value": "Tran Thi Binh", "confidence_band": "high"},
+      "date": {"value": "2026-04-02", "confidence_band": "high", "note": "Định dạng ISO; đây là date of service"},
+      "items": {"value": [
+        {"description": "Ward room (per night)", "quantity": 2, "unit_price": 800, "total": 1600},
+        {"description": "Medication pack - antibiotics", "quantity": 1, "unit_price": 430, "total": 430},
+        {"description": "IV drip set", "quantity": 3, "unit_price": 75, "total": 225},
+        {"description": "Administrative fee", "quantity": 1, "unit_price": 45, "total": 45}
+      ], "confidence_band": "high"},
+      "grand_total": {"value": 2300, "confidence_band": "high"},
+      "payment_method": {"value": null, "confidence_band": "low", "note": "Thiếu trên tài liệu, phải null"}
+    },
+    "validation_errors_expected": [],
+    "note": "Tổng khớp chính xác (2300). Chỉ kiểm tra field thiếu, không được bịa payment_method."
+  },
+  "receipt_03_riverside_invoice.pdf": {
+    "document_type": "receipt",
+    "fields": {
+      "hospital_name": {"value": "Riverside General Hospital", "confidence_band": "high"},
+      "patient_name": {"value": "Pham Quoc Dat", "confidence_band": "high"},
+      "date": {"value": "2026-03-15", "confidence_band": "high", "note": "Định dạng DD-Mon-YYYY"},
+      "items": {"value": [
+        {"description": "Surgical consultation", "quantity": 1, "unit_price": 600000, "total": 600000},
+        {"description": "Abdominal ultrasound", "quantity": 1, "unit_price": 380000, "total": 380000},
+        {"description": "Medicine set", "quantity": 4, "unit_price": 95000, "total": 380000},
+        {"description": "Laboratory fee", "quantity": 1, "unit_price": 220000, "total": 220000}
+      ], "confidence_band": "high"},
+      "grand_total": {"value": 1680000, "confidence_band": "high", "note": "Amount payable, không phải subtotal 1,580,000"},
+      "payment_method": {"value": "Bank transfer", "confidence_band": "high"}
+    },
+    "validation_errors_expected": ["amount_mismatch: tổng item 1,580,000 lệch grand_total 1,680,000 ≈ 5.95% (> 5%)"],
+    "note": "Lệch nhẹ vượt ngưỡng 5% một chút, phải bị flag. Pipeline không được nhầm subtotal là grand_total."
+  },
+  "discharge_01_sunrise_summary.pdf": {
+    "document_type": "discharge_summary",
+    "fields": {
+      "hospital_name": {"value": "Sunrise Medical Center", "confidence_band": "high"},
+      "patient_name": {"value": "Le Minh Duc", "confidence_band": "high"},
+      "admission_date": {"value": "2026-02-03", "confidence_band": "high"},
+      "discharge_date": {"value": "2026-02-09", "confidence_band": "high"},
+      "diagnosis": {"value": {"primary": "Community-acquired pneumonia, right lower lobe (J18.9)", "secondary": ["Type 2 diabetes mellitus", "Essential hypertension"]}, "confidence_band": "high"},
+      "procedures_performed": {"value": ["Chest CT scan", "Intravenous antibiotic therapy (7 days)"], "confidence_band": "high"},
+      "attending_physician": {"value": "Dr. Pham Quoc Huy", "confidence_band": "high"},
+      "discharge_instructions": {"value": "Complete oral antibiotics for 5 more days. Check blood glucose twice daily. Return immediately if fever exceeds 39 °C or breathing worsens. Follow-up in clinic in 2 weeks.", "confidence_band": "high"}
+    },
+    "validation_errors_expected": []
+  },
+  "discharge_02_saigon_form.pdf": {
+    "document_type": "discharge_summary",
+    "fields": {
+      "hospital_name": {"value": "Lotus General Hospital", "confidence_band": "high"},
+      "patient_name": {"value": "Vo Thanh Hao", "confidence_band": "high"},
+      "admission_date": {"value": "2026-02-03", "confidence_band": "medium", "note": "DD.MM.YYYY; mẫu có thể là MM.DD nên confidence vừa"},
+      "discharge_date": {"value": "2026-02-10", "confidence_band": "medium", "note": "DD.MM.YYYY"},
+      "diagnosis": {"value": {"primary": "Acute appendicitis, uncomplicated", "secondary": null}, "confidence_band": "high", "note": "Secondary để trống, phải null"},
+      "procedures_performed": {"value": ["Laparoscopic appendectomy"], "confidence_band": "high"},
+      "attending_physician": {"value": "Dr. Nguyen Thi Lan", "confidence_band": "high"},
+      "discharge_instructions": {"value": null, "confidence_band": "low", "note": "Ô để trống, phải null"}
+    },
+    "validation_errors_expected": []
+  },
+  "discharge_03_mekong_letter.pdf": {
+    "document_type": "discharge_summary",
+    "fields": {
+      "hospital_name": {"value": "Mekong Regional Hospital", "confidence_band": "high"},
+      "patient_name": {"value": "Dang Thu Huong", "confidence_band": "high"},
+      "admission_date": {"value": "2026-01-28", "confidence_band": "high"},
+      "discharge_date": {"value": "2026-02-01", "confidence_band": "high"},
+      "diagnosis": {"value": {"primary": "Closed fracture of right radius (distal)", "secondary": ["Osteoporosis"]}, "confidence_band": "high"},
+      "procedures_performed": {"value": ["Closed reduction under sedation", "Plaster cast application"], "confidence_band": "high"},
+      "attending_physician": {"value": "Dr. Hoang Minh Tuan", "confidence_band": "high"},
+      "discharge_instructions": {"value": "Keep the cast dry and elevate the arm above heart level for 48 hours. Begin finger exercises daily. Physiotherapy referral will be issued at the 4-week review.", "confidence_band": "high"}
+    },
+    "validation_errors_expected": []
+  },
+  "lab_01_central_report.pdf": {
+    "document_type": "lab_report",
+    "fields": {
+      "lab_name": {"value": "Central Diagnostic Lab", "confidence_band": "high"},
+      "patient_name": {"value": "Pham Anh Tu", "confidence_band": "high"},
+      "date": {"value": "2026-03-12", "confidence_band": "medium", "note": "12/03/2026 không ghi định dạng; có thể là 2026-12-03. Confidence phải vừa phải, không được cao tuyệt đối"},
+      "tests": {"value": [
+        {"test_name": "Hemoglobin", "result": "10.2", "unit": "g/dL", "reference_range": "13.0 – 17.0", "flag": "low"},
+        {"test_name": "White blood cell count", "result": "7.8", "unit": "x10^9/L", "reference_range": "4.0 – 11.0", "flag": "normal"},
+        {"test_name": "Fasting glucose", "result": "126", "unit": "mg/dL", "reference_range": "70 – 99", "flag": "high"},
+        {"test_name": "Total cholesterol", "result": "180", "unit": "mg/dL", "reference_range": "< 200", "flag": "normal"}
+      ], "confidence_band": "high"}
+    },
+    "validation_errors_expected": []
+  },
+  "lab_02_lotus_pathology.pdf": {
+    "document_type": "lab_report",
+    "fields": {
+      "lab_name": {"value": "Lotus Pathology Laboratory", "confidence_band": "high"},
+      "patient_name": {"value": "Ngo Bich Ngoc", "confidence_band": "high"},
+      "date": {"value": null, "confidence_band": "low", "note": "31/02/2026 không tồn tại; giữ raw value để báo lỗi, không tự sửa"},
+      "tests": {"value": [
+        {"test_name": "ALT", "result": "42", "unit": "U/L", "reference_range": "7 - 56", "flag": "normal"},
+        {"test_name": "Creatinine", "result": "1.6", "unit": "mg/dL", "reference_range": "0.6 - 1.2", "flag": "high"},
+        {"test_name": "Sodium", "result": "139", "unit": "mmol/L", "reference_range": "135 - 145", "flag": "normal"}
+      ], "confidence_band": "high", "note": "ALT và Sodium không có flag in trên tài liệu; pipeline phải tự suy ra normal từ reference range"}
+    },
+    "validation_errors_expected": ["invalid_date: 31/02/2026 không phải ngày hợp lệ"]
+  },
+  "prescription_01_family_clinic.pdf": {
+    "document_type": "prescription",
+    "fields": {
+      "doctor_name": {"value": "Tran Van Long", "confidence_band": "high"},
+      "patient_name": {"value": "Hoang Gia Bao", "confidence_band": "high"},
+      "date": {"value": "2026-01-05", "confidence_band": "high", "note": "5 Jan 2026"},
+      "medications": {"value": [
+        {"name": "Amoxicillin 500 mg capsule", "dosage": "500 mg", "frequency": "3 times daily", "duration": "7 days", "quantity": "21 capsules"},
+        {"name": "Paracetamol 500 mg tablet", "dosage": "500 mg", "frequency": "every 6 hours as needed", "duration": null, "quantity": "20 tablets"}
+      ], "confidence_band": "high", "note": "Paracetamol không có duration, phải null"}
+    },
+    "validation_errors_expected": []
+  },
+  "prescription_02_riverside_rx.pdf": {
+    "document_type": "prescription",
+    "fields": {
+      "doctor_name": {"value": "Nguyen Ha My", "confidence_band": "high"},
+      "patient_name": {"value": "Pham Thu Trang", "confidence_band": "high"},
+      "date": {"value": "2026-04-18", "confidence_band": "high"},
+      "medications": {"value": [
+        {"name": "Metformin 850 mg tablet", "dosage": "850 mg", "frequency": "Twice daily with meals", "duration": "90 days", "quantity": "180 tablets"},
+        {"name": "Atorvastatin 20 mg tablet", "dosage": "20 mg", "frequency": "Once daily at night", "duration": null, "quantity": "30 tablets"}
+      ], "confidence_band": "high", "note": "Atorvastatin ô duration trống, phải null"}
+    },
+    "validation_errors_expected": []
+  }
+}
