@@ -1,0 +1,10 @@
+{
+  "name": "ai-challange-08",
+  "private": true,
+  "scripts": {
+    "install:all": "cd app && bun install && cd ../server && bun install",
+    "test": "cd server && bun test",
+    "build": "cd app && bun run build",
+    "start": "bun run build && cd server && bun index.ts"
+  }
+}
