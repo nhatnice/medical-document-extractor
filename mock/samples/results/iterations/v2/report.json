@@ -1,0 +1,265 @@
+{
+  "run_at": "2026-10-20T06:48:32.421Z",
+  "model": "deepseek-flash",
+  "classification": {
+    "correct": 10,
+    "total": 10
+  },
+  "leaf_totals": {
+    "correct": 151,
+    "wrong": 5,
+    "hallucinated": 0,
+    "missing": 0
+  },
+  "confidence": {
+    "fields_scored": 58,
+    "share_above_0_9": 0.293,
+    "mean_by_expected_band": {
+      "high": 0.902,
+      "medium": 0.767,
+      "low": 0.033
+    }
+  },
+  "per_document": {
+    "discharge_01_sunrise_summary.pdf": {
+      "classification": {
+        "expected": "discharge_summary",
+        "actual": "discharge_summary",
+        "ok": true,
+        "confidence": 0.99
+      },
+      "leaves": {
+        "correct": 11,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "discharge_02_saigon_form.pdf": {
+      "classification": {
+        "expected": "discharge_summary",
+        "actual": "discharge_summary",
+        "ok": true,
+        "confidence": 0.98
+      },
+      "leaves": {
+        "correct": 9,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "discharge_03_mekong_letter.pdf": {
+      "classification": {
+        "expected": "discharge_summary",
+        "actual": "discharge_summary",
+        "ok": true,
+        "confidence": 0.97
+      },
+      "leaves": {
+        "correct": 10,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "lab_01_central_report.pdf": {
+      "classification": {
+        "expected": "lab_report",
+        "actual": "lab_report",
+        "ok": true,
+        "confidence": 0.99
+      },
+      "leaves": {
+        "correct": 23,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "lab_02_lotus_pathology.pdf": {
+      "classification": {
+        "expected": "lab_report",
+        "actual": "lab_report",
+        "ok": true,
+        "confidence": 0.99
+      },
+      "leaves": {
+        "correct": 18,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [
+          "invalid_date: 31/02/2026 không phải ngày hợp lệ"
+        ],
+        "actual": [
+          "invalid_date: date \"31/02/2026\" is not a real calendar date"
+        ],
+        "all_expected_caught": true
+      }
+    },
+    "prescription_01_family_clinic.pdf": {
+      "classification": {
+        "expected": "prescription",
+        "actual": "prescription",
+        "ok": true,
+        "confidence": 0.98
+      },
+      "leaves": {
+        "correct": 10,
+        "wrong": 3,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [
+        {
+          "path": "medications[0].dosage",
+          "verdict": "wrong",
+          "expected": "500 mg",
+          "actual": "1 capsule"
+        },
+        {
+          "path": "medications[1].dosage",
+          "verdict": "wrong",
+          "expected": "500 mg",
+          "actual": "1 tablet"
+        },
+        {
+          "path": "medications[1].frequency",
+          "verdict": "wrong",
+          "expected": "every 6 hours as needed",
+          "actual": "every 6 hours as needed for fever or pain"
+        }
+      ],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "prescription_02_riverside_rx.pdf": {
+      "classification": {
+        "expected": "prescription",
+        "actual": "prescription",
+        "ok": true,
+        "confidence": 0.98
+      },
+      "leaves": {
+        "correct": 13,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "receipt_01_sunrise_bill.pdf": {
+      "classification": {
+        "expected": "receipt",
+        "actual": "receipt",
+        "ok": true,
+        "confidence": 0.98
+      },
+      "leaves": {
+        "correct": 17,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "receipt_02_stmary_statement.pdf": {
+      "classification": {
+        "expected": "receipt",
+        "actual": "receipt",
+        "ok": true,
+        "confidence": 0.98
+      },
+      "leaves": {
+        "correct": 19,
+        "wrong": 2,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [
+        {
+          "path": "items[1].unit_price",
+          "verdict": "wrong",
+          "expected": 430,
+          "actual": 439
+        },
+        {
+          "path": "items[1].total",
+          "verdict": "wrong",
+          "expected": 430,
+          "actual": 439
+        }
+      ],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "receipt_03_riverside_invoice.pdf": {
+      "classification": {
+        "expected": "receipt",
+        "actual": "receipt",
+        "ok": true,
+        "confidence": 0.98
+      },
+      "leaves": {
+        "correct": 21,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [
+          "amount_mismatch: tổng item 1,580,000 lệch grand_total 1,680,000 ≈ 5.95% (> 5%)"
+        ],
+        "actual": [
+          "amount_mismatch: items total 1580000 differs from grand_total 1680000 by 5.95% (> 5%)"
+        ],
+        "all_expected_caught": true
+      }
+    }
+  }
+}

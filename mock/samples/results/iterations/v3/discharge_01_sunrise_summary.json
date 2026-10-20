@@ -1,0 +1,48 @@
+{
+  "document_type": "discharge_summary",
+  "confidence": 0.99,
+  "fields": {
+    "hospital_name": {
+      "value": "Sunrise Medical Center",
+      "confidence": 0.92
+    },
+    "patient_name": {
+      "value": "Le Minh Duc",
+      "confidence": 0.92
+    },
+    "admission_date": {
+      "value": "2026-02-03",
+      "confidence": 0.9
+    },
+    "discharge_date": {
+      "value": "2026-02-09",
+      "confidence": 0.9
+    },
+    "diagnosis": {
+      "value": {
+        "primary": "Community-acquired pneumonia, right lower lobe (J18.9)",
+        "secondary": [
+          "Type 2 diabetes mellitus",
+          "Essential hypertension"
+        ]
+      },
+      "confidence": 0.9
+    },
+    "procedures_performed": {
+      "value": [
+        "Chest CT scan",
+        "intravenous antibiotic therapy (7 days)"
+      ],
+      "confidence": 0.88
+    },
+    "attending_physician": {
+      "value": "Dr. Pham Quoc Huy",
+      "confidence": 0.92
+    },
+    "discharge_instructions": {
+      "value": "Complete oral antibiotics for 5 more days. Check blood glucose twice daily. Return immediately if fever exceeds 39 °C or breathing worsens. Follow-up in clinic in 2 weeks.",
+      "confidence": 0.9
+    }
+  },
+  "validation_errors": []
+}

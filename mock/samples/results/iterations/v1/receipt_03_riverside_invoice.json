@@ -1,0 +1,58 @@
+{
+  "document_type": "receipt",
+  "confidence": 0.98,
+  "fields": {
+    "hospital_name": {
+      "value": "Riverside General Hospital",
+      "confidence": 0.98
+    },
+    "patient_name": {
+      "value": "Pham Quoc Dat",
+      "confidence": 0.97
+    },
+    "date": {
+      "value": "2026-03-15",
+      "confidence": 0.88
+    },
+    "items": {
+      "value": [
+        {
+          "description": "Surgical consultation",
+          "quantity": 1,
+          "unit_price": 600000,
+          "total": 600000
+        },
+        {
+          "description": "Abdominal ultrasound",
+          "quantity": 1,
+          "unit_price": 380000,
+          "total": 380000
+        },
+        {
+          "description": "Medicine set",
+          "quantity": 4,
+          "unit_price": 95000,
+          "total": 380000
+        },
+        {
+          "description": "Laboratory fee",
+          "quantity": 1,
+          "unit_price": 220000,
+          "total": 220000
+        }
+      ],
+      "confidence": 0.97
+    },
+    "grand_total": {
+      "value": 1680000,
+      "confidence": 0.95
+    },
+    "payment_method": {
+      "value": "Bank transfer",
+      "confidence": 0.96
+    }
+  },
+  "validation_errors": [
+    "amount_mismatch: items total 1580000 differs from grand_total 1680000 by 5.95% (> 5%)"
+  ]
+}

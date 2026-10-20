@@ -1,0 +1,47 @@
+{
+  "document_type": "lab_report",
+  "confidence": 0.99,
+  "fields": {
+    "lab_name": {
+      "value": "LOTUS PATHOLOGY LABORATORY",
+      "confidence": 0.92
+    },
+    "patient_name": {
+      "value": "Ngo Bich Ngoc",
+      "confidence": 0.9
+    },
+    "date": {
+      "value": null,
+      "confidence": 0.1
+    },
+    "tests": {
+      "value": [
+        {
+          "test_name": "ALT",
+          "result": "42",
+          "unit": "U/L",
+          "reference_range": "7 - 56",
+          "flag": "normal"
+        },
+        {
+          "test_name": "Creatinine",
+          "result": "1.6",
+          "unit": "mg/dL",
+          "reference_range": "0.6 - 1.2",
+          "flag": "high"
+        },
+        {
+          "test_name": "Sodium",
+          "result": "139",
+          "unit": "mmol/L",
+          "reference_range": "135 - 145",
+          "flag": "normal"
+        }
+      ],
+      "confidence": 0.88
+    }
+  },
+  "validation_errors": [
+    "invalid_date: date \"31/02/2026\" is not a real calendar date"
+  ]
+}

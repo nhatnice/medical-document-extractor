@@ -1,0 +1,47 @@
+{
+  "document_type": "discharge_summary",
+  "confidence": 0.97,
+  "fields": {
+    "hospital_name": {
+      "value": "Mekong Regional Hospital",
+      "confidence": 0.92
+    },
+    "patient_name": {
+      "value": "Dang Thu Huong",
+      "confidence": 0.92
+    },
+    "admission_date": {
+      "value": "2026-01-28",
+      "confidence": 0.9
+    },
+    "discharge_date": {
+      "value": "2026-02-01",
+      "confidence": 0.9
+    },
+    "diagnosis": {
+      "value": {
+        "primary": "Closed fracture of right radius (distal)",
+        "secondary": [
+          "osteoporosis"
+        ]
+      },
+      "confidence": 0.88
+    },
+    "procedures_performed": {
+      "value": [
+        "Closed reduction under sedation",
+        "plaster cast application"
+      ],
+      "confidence": 0.88
+    },
+    "attending_physician": {
+      "value": "Dr. Hoang Minh Tuan",
+      "confidence": 0.9
+    },
+    "discharge_instructions": {
+      "value": "Keep the cast dry and elevate the arm above heart level for 48 hours. Begin finger exercises daily. Physiotherapy referral will be issued at the 4-week review.",
+      "confidence": 0.88
+    }
+  },
+  "validation_errors": []
+}

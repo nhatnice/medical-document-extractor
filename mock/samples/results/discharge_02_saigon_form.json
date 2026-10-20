@@ -1,0 +1,44 @@
+{
+  "document_type": "discharge_summary",
+  "confidence": 0.99,
+  "fields": {
+    "hospital_name": {
+      "value": "Lotus General Hospital",
+      "confidence": 0.92
+    },
+    "patient_name": {
+      "value": "Vo Thanh Hao",
+      "confidence": 0.9
+    },
+    "admission_date": {
+      "value": "2026-02-03",
+      "confidence": 0.85
+    },
+    "discharge_date": {
+      "value": "2026-02-10",
+      "confidence": 0.9
+    },
+    "diagnosis": {
+      "value": {
+        "primary": "Acute appendicitis, uncomplicated",
+        "secondary": null
+      },
+      "confidence": 0.9
+    },
+    "procedures_performed": {
+      "value": [
+        "Laparoscopic appendectomy"
+      ],
+      "confidence": 0.88
+    },
+    "attending_physician": {
+      "value": "Dr. Nguyen Thi Lan",
+      "confidence": 0.9
+    },
+    "discharge_instructions": {
+      "value": null,
+      "confidence": 0
+    }
+  },
+  "validation_errors": []
+}

@@ -1,0 +1,38 @@
+{
+  "document_type": "prescription",
+  "confidence": 0.97,
+  "fields": {
+    "doctor_name": {
+      "value": "Dr. Nguyen Ha My",
+      "confidence": 0.97
+    },
+    "patient_name": {
+      "value": "Pham Thu Trang",
+      "confidence": 0.97
+    },
+    "date": {
+      "value": "2026-04-18",
+      "confidence": 0.95
+    },
+    "medications": {
+      "value": [
+        {
+          "name": "Metformin 850 mg tablet",
+          "dosage": "850 mg",
+          "frequency": "Twice daily with meals",
+          "duration": "90 days",
+          "quantity": "180 tablets"
+        },
+        {
+          "name": "Atorvastatin 20 mg tablet",
+          "dosage": "20 mg",
+          "frequency": "Once daily at night",
+          "duration": null,
+          "quantity": "30 tablets"
+        }
+      ],
+      "confidence": 0.95
+    }
+  },
+  "validation_errors": []
+}

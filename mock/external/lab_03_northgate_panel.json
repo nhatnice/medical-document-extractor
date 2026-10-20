@@ -1,0 +1,52 @@
+{
+  "document_type": "lab_report",
+  "confidence": 0.98,
+  "fields": {
+    "lab_name": {
+      "value": "NORTHGATE PATHOLOGY SERVICES",
+      "confidence": 0.92
+    },
+    "patient_name": {
+      "value": "Le Minh Quan",
+      "confidence": 0.92
+    },
+    "date": {
+      "value": "2026-05-07",
+      "confidence": 0.85
+    },
+    "tests": {
+      "value": [
+        {
+          "test_name": "Sodium",
+          "result": "138",
+          "unit": "mmol/L",
+          "reference_range": "135 - 145",
+          "flag": "normal"
+        },
+        {
+          "test_name": "Potassium",
+          "result": "5.8",
+          "unit": "mmol/L",
+          "reference_range": "3.5 - 5.0",
+          "flag": "high"
+        },
+        {
+          "test_name": "ALT",
+          "result": "22",
+          "unit": "U/L",
+          "reference_range": "7 - 56",
+          "flag": "normal"
+        },
+        {
+          "test_name": "Platelets",
+          "result": "96",
+          "unit": "x10^9/L",
+          "reference_range": "150 - 400",
+          "flag": "low"
+        }
+      ],
+      "confidence": 0.9
+    }
+  },
+  "validation_errors": []
+}

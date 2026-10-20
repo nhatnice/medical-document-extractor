@@ -1,0 +1,82 @@
+{
+  "run_at": "2026-10-20T06:49:41.204Z",
+  "model": "deepseek-flash",
+  "classification": {
+    "correct": 2,
+    "total": 2
+  },
+  "leaf_totals": {
+    "correct": 38,
+    "wrong": 2,
+    "hallucinated": 0,
+    "missing": 0
+  },
+  "confidence": {
+    "fields_scored": 10,
+    "share_above_0_9": 0.5,
+    "mean_by_expected_band": {
+      "high": 0.906,
+      "medium": 0.9,
+      "low": null
+    }
+  },
+  "per_document": {
+    "lab_03_northgate_panel.png": {
+      "classification": {
+        "expected": "lab_report",
+        "actual": "lab_report",
+        "ok": true,
+        "confidence": 0.98
+      },
+      "leaves": {
+        "correct": 23,
+        "wrong": 0,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [],
+      "validation": {
+        "expected": [],
+        "actual": [],
+        "all_expected_caught": true
+      }
+    },
+    "receipt_04_greenleaf_pharmacy.png": {
+      "classification": {
+        "expected": "receipt",
+        "actual": "receipt",
+        "ok": true,
+        "confidence": 0.99
+      },
+      "leaves": {
+        "correct": 15,
+        "wrong": 2,
+        "hallucinated": 0,
+        "missing": 0
+      },
+      "problems": [
+        {
+          "path": "items[0].description",
+          "verdict": "wrong",
+          "expected": "Paracetamol 500mg x2 packs",
+          "actual": "Paracetamol 500mg"
+        },
+        {
+          "path": "payment_method",
+          "verdict": "wrong",
+          "expected": "Visa",
+          "actual": "Visa ending 4421"
+        }
+      ],
+      "validation": {
+        "expected": [
+          "amount_mismatch: items 235000 vs grand_total 253800 (~7.4%, VAT không nằm trong item)"
+        ],
+        "actual": [
+          "amount_mismatch: items total 235000 differs from grand_total 253800 by 7.41% (> 5%)"
+        ],
+        "all_expected_caught": true
+      }
+    }
+  }
+}

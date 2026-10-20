@@ -1,0 +1,38 @@
+{
+  "document_type": "prescription",
+  "confidence": 0.98,
+  "fields": {
+    "doctor_name": {
+      "value": "Dr. Tran Van Long",
+      "confidence": 0.9
+    },
+    "patient_name": {
+      "value": "Hoang Gia Bao",
+      "confidence": 0.9
+    },
+    "date": {
+      "value": "2026-01-05",
+      "confidence": 0.85
+    },
+    "medications": {
+      "value": [
+        {
+          "name": "Amoxicillin 500 mg capsule",
+          "dosage": "1 capsule",
+          "frequency": "3 times daily",
+          "duration": "7 days",
+          "quantity": "21 capsules"
+        },
+        {
+          "name": "Paracetamol 500 mg tablet",
+          "dosage": "1 tablet",
+          "frequency": "every 6 hours as needed for fever or pain",
+          "duration": null,
+          "quantity": "20 tablets"
+        }
+      ],
+      "confidence": 0.9
+    }
+  },
+  "validation_errors": []
+}

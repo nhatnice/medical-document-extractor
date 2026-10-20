@@ -1,0 +1,56 @@
+{
+  "document_type": "receipt",
+  "confidence": 0.98,
+  "fields": {
+    "hospital_name": {
+      "value": "St. Mary Clinic",
+      "confidence": 0.92
+    },
+    "patient_name": {
+      "value": "Tran Thi Binh",
+      "confidence": 0.92
+    },
+    "date": {
+      "value": "2026-04-02",
+      "confidence": 0.9
+    },
+    "items": {
+      "value": [
+        {
+          "description": "Ward room (per night)",
+          "quantity": 2,
+          "unit_price": 800,
+          "total": 1600
+        },
+        {
+          "description": "Medication pack - antibiotics",
+          "quantity": 1,
+          "unit_price": 439,
+          "total": 439
+        },
+        {
+          "description": "IV drip set",
+          "quantity": 3,
+          "unit_price": 75,
+          "total": 225
+        },
+        {
+          "description": "Administrative fee",
+          "quantity": 1,
+          "unit_price": 45,
+          "total": 45
+        }
+      ],
+      "confidence": 0.9
+    },
+    "grand_total": {
+      "value": 2300,
+      "confidence": 0.88
+    },
+    "payment_method": {
+      "value": null,
+      "confidence": 0
+    }
+  },
+  "validation_errors": []
+}

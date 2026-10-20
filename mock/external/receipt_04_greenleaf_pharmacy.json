@@ -1,0 +1,52 @@
+{
+  "document_type": "receipt",
+  "confidence": 0.99,
+  "fields": {
+    "hospital_name": {
+      "value": "GREENLEAF PHARMACY",
+      "confidence": 0.92
+    },
+    "patient_name": {
+      "value": "Hoang Thi Mai",
+      "confidence": 0.9
+    },
+    "date": {
+      "value": "2026-05-12",
+      "confidence": 0.92
+    },
+    "items": {
+      "value": [
+        {
+          "description": "Paracetamol 500mg",
+          "quantity": 2,
+          "unit_price": 25000,
+          "total": 50000
+        },
+        {
+          "description": "Vitamin C 1000mg",
+          "quantity": 1,
+          "unit_price": 120000,
+          "total": 120000
+        },
+        {
+          "description": "Cough syrup 100ml",
+          "quantity": 1,
+          "unit_price": 65000,
+          "total": 65000
+        }
+      ],
+      "confidence": 0.9
+    },
+    "grand_total": {
+      "value": 253800,
+      "confidence": 0.92
+    },
+    "payment_method": {
+      "value": "Visa ending 4421",
+      "confidence": 0.9
+    }
+  },
+  "validation_errors": [
+    "amount_mismatch: items total 235000 differs from grand_total 253800 by 7.41% (> 5%)"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "document_type": "receipt",
+  "confidence": 0.99,
+  "fields": {
+    "hospital_name": {
+      "value": "Sunrise Medical Center",
+      "confidence": 0.92
+    },
+    "patient_name": {
+      "value": "Nguyen Van An",
+      "confidence": 0.92
+    },
+    "date": {
+      "value": "2026-03-15",
+      "confidence": 0.9
+    },
+    "items": {
+      "value": [
+        {
+          "description": "Consultation fee - General",
+          "quantity": 1,
+          "unit_price": 500000,
+          "total": 500000
+        },
+        {
+          "description": "Blood test panel (CBC)",
+          "quantity": 2,
+          "unit_price": 150000,
+          "total": 300000
+        },
+        {
+          "description": "X-ray, chest (PA view)",
+          "quantity": 1,
+          "unit_price": 250000,
+          "total": 250000
+        }
+      ],
+      "confidence": 0.9
+    },
+    "grand_total": {
+      "value": 1050000,
+      "confidence": 0.92
+    },
+    "payment_method": {
+      "value": "Cash",
+      "confidence": 0.92
+    }
+  },
+  "validation_errors": []
+}

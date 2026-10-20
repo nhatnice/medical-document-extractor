@@ -1,0 +1,34 @@
+{
+  "_readme": "Đáp án cho 2 tài liệu NGOÀI bộ mẫu (kiểm tra tái sử dụng). Không dùng để tinh chỉnh prompt trước khi chạy lần đầu.",
+  "lab_03_northgate_panel.png": {
+    "document_type": "lab_report",
+    "fields": {
+      "lab_name": {"value": "Northgate Pathology Services", "confidence_band": "high"},
+      "patient_name": {"value": "Le Minh Quan", "confidence_band": "high"},
+      "date": {"value": "2026-05-07", "confidence_band": "high", "note": "Ngày phát hành báo cáo (issued), DD Month YYYY"},
+      "tests": {"value": [
+        {"test_name": "Sodium", "result": "138", "unit": "mmol/L", "reference_range": "135 - 145", "flag": "normal"},
+        {"test_name": "Potassium", "result": "5.8", "unit": "mmol/L", "reference_range": "3.5 - 5.0", "flag": "high"},
+        {"test_name": "ALT", "result": "22", "unit": "U/L", "reference_range": "7 - 56", "flag": "normal"},
+        {"test_name": "Platelets", "result": "96", "unit": "x10^9/L", "reference_range": "150 - 400", "flag": "low"}
+      ], "confidence_band": "high"}
+    },
+    "validation_errors_expected": []
+  },
+  "receipt_04_greenleaf_pharmacy.png": {
+    "document_type": "receipt",
+    "fields": {
+      "hospital_name": {"value": "Greenleaf Pharmacy", "confidence_band": "high"},
+      "patient_name": {"value": "Hoang Thi Mai", "confidence_band": "high"},
+      "date": {"value": "2026-05-12", "confidence_band": "high"},
+      "items": {"value": [
+        {"description": "Paracetamol 500mg x2 packs", "quantity": 2, "unit_price": 25000, "total": 50000},
+        {"description": "Vitamin C 1000mg", "quantity": 1, "unit_price": 120000, "total": 120000},
+        {"description": "Cough syrup 100ml", "quantity": 1, "unit_price": 65000, "total": 65000}
+      ], "confidence_band": "high"},
+      "grand_total": {"value": 253800, "confidence_band": "high", "note": "TOTAL sau VAT 8%, không phải Subtotal 235000"},
+      "payment_method": {"value": "Visa", "confidence_band": "medium", "note": "Visa ending 4421"}
+    },
+    "validation_errors_expected": ["amount_mismatch: items 235000 vs grand_total 253800 (~7.4%, VAT không nằm trong item)"]
+  }
+}
