@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { isLeapYear, parseIsoDate, validateFields, type Fields } from "../src/validate";
+import { isLeapYear, parseIsoDate, parseReferenceRange, validateFields, type Fields } from "../src/validate";
 
 const field = (value: unknown, confidence = 0.9) => ({ value, confidence });
 
@@ -233,5 +233,85 @@ describe("receipt arithmetic tolerance", () => {
   test("sum check is skipped when grand_total is null", () => {
     const { errors } = validateFields("receipt", { items: field([line(1, 1000, 1000)]), grand_total: field(null, 0) });
     expect(errors).toEqual([]);
+  });
+});
+
+describe("lab flags", () => {
+  const test_ = (result: string, reference_range: string, flag: string | null) => ({
+    test_name: "Hb",
+    result,
+    unit: "g/dL",
+    reference_range,
+    flag,
+    confidence: 0.9,
+  });
+
+  test("parses two-sided and one-sided reference ranges", () => {
+    expect(parseReferenceRange("12.0 - 16.0")).toEqual({ low: 12, high: 16 });
+    expect(parseReferenceRange("3,5-5,0")).toEqual({ low: 3.5, high: 5 });
+    expect(parseReferenceRange("< 200")).toEqual({ high: 200 });
+    expect(parseReferenceRange("≥ 40")).toEqual({ low: 40 });
+    expect(parseReferenceRange("Negative")).toBeNull();
+  });
+
+  test("a flag that matches the result passes", () => {
+    const { errors } = validateFields("lab_report", {
+      tests: field([test_("17.2", "12.0 - 16.0", "high"), test_("14", "12.0 - 16.0", "normal")]),
+    });
+    expect(errors).toEqual([]);
+  });
+
+  test("a flag that contradicts the result is flagged and nulled on that row only", () => {
+    const { fields, errors } = validateFields("lab_report", {
+      tests: field([test_("17.2", "12.0 - 16.0", "low"), test_("14", "12.0 - 16.0", "normal")]),
+    });
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toStartWith("flag_mismatch: tests[0]");
+    const [flagged, clean] = fields.tests!.value as Array<Record<string, unknown>>;
+    expect(flagged!.flag).toBeNull();
+    expect(flagged!.confidence).toBe(0.1);
+    expect(clean!.flag).toBe("normal");
+  });
+
+  test("a value exactly on the bound is normal", () => {
+    expect(validateFields("lab_report", { tests: field([test_("16.0", "12.0 - 16.0", "normal")]) }).errors).toEqual([]);
+    expect(validateFields("lab_report", { tests: field([test_("200", "< 200", "normal")]) }).errors).toEqual([]);
+  });
+
+  test("the check is skipped when the result or range cannot be read", () => {
+    const { errors } = validateFields("lab_report", {
+      tests: field([test_("<0.5", "0.0 - 1.0", "high"), test_("8", "Negative", "high")]),
+    });
+    expect(errors).toEqual([]);
+  });
+});
+
+describe("prescriptions", () => {
+  const med = (quantity: string | null, duration: string | null) => ({
+    name: "Amoxicillin 500 mg",
+    dosage: "500 mg",
+    frequency: "Twice daily",
+    duration,
+    quantity,
+    confidence: 0.9,
+  });
+
+  test("positive quantity and duration pass", () => {
+    const { errors } = validateFields("prescription", { medications: field([med("21 capsules", "7 days")]) });
+    expect(errors).toEqual([]);
+  });
+
+  test("a zero or negative quantity is flagged and nulled", () => {
+    const { fields, errors } = validateFields("prescription", { medications: field([med("0 capsules", "7 days")]) });
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toStartWith("invalid_quantity: medications[0]");
+    expect((fields.medications!.value as Array<Record<string, unknown>>)[0]!.quantity).toBeNull();
+  });
+
+  test("a zero duration is flagged, and null or free-text values are left alone", () => {
+    expect(validateFields("prescription", { medications: field([med(null, "0 days")]) }).errors[0]).toStartWith(
+      "invalid_duration",
+    );
+    expect(validateFields("prescription", { medications: field([med("one box", null)]) }).errors).toEqual([]);
   });
 });

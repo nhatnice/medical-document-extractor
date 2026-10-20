@@ -22,6 +22,15 @@ describe("extractionSchema", () => {
     });
   }
 
+  test("every list row needs its own confidence", () => {
+    const fields = Object.fromEntries(REQUIRED.receipt.map((name) => [name, { value: null, confidence: 0.5 }]));
+    const item = { description: "x", quantity: 1, unit_price: 1, total: 1 };
+    const parse = (row: object) =>
+      extractionSchema("receipt").safeParse({ fields: { ...fields, items: { value: [row], confidence: 0.9 } } }).success;
+    expect(parse({ ...item, confidence: 0.8 })).toBe(true);
+    expect(parse(item)).toBe(false);
+  });
+
   test("confidence outside 0..1 is rejected", () => {
     const fields = Object.fromEntries(REQUIRED.prescription.map((name) => [name, { value: null, confidence: 1.5 }]));
     expect(extractionSchema("prescription").safeParse({ fields }).success).toBe(false);
@@ -29,7 +38,7 @@ describe("extractionSchema", () => {
 
   test("lab flag only accepts normal, high or low", () => {
     const fields = Object.fromEntries(REQUIRED.lab_report.map((name) => [name, { value: null, confidence: 0.5 }]));
-    const row = (flag: string) => ({ test_name: "Hb", result: "1", unit: "g", reference_range: "1-2", flag });
+    const row = (flag: string) => ({ test_name: "Hb", result: "1", unit: "g", reference_range: "1-2", flag, confidence: 0.9 });
     const parse = (flag: string) =>
       extractionSchema("lab_report").safeParse({ fields: { ...fields, tests: { value: [row(flag)], confidence: 0.9 } } }).success;
     expect(parse("high")).toBe(true);

@@ -37,6 +37,48 @@ function invalidate(field: FieldResult): void {
 }
 
 type Items = Array<Record<string, unknown>>;
+export type Row = Record<string, unknown>;
+
+// Clears one value inside a list row. The row's own confidence is capped, like a top-level field.
+function invalidateRow(row: Row, key: string): void {
+  row[key] = null;
+  if (typeof row.confidence === "number") row.confidence = Math.min(row.confidence, INVALID_CONFIDENCE_CAP);
+}
+
+// Comma is accepted as a decimal mark.
+const NUM = String.raw`(-?\d+(?:[.,]\d+)?)`;
+const toNumber = (text: string) => Number(text.replace(",", "."));
+const LEADING_NUMBER = new RegExp(`^\\s*${NUM}`);
+const RANGE_BETWEEN = new RegExp(`^${NUM}\\s*(?:-|–|—|to)\\s*${NUM}`, "i");
+const RANGE_ONE_SIDED = new RegExp(`^(<|>)=?\\s*${NUM}|^(≤|≥)\\s*${NUM}`);
+
+// Reads the leading number of a printed value such as "3.5", "21 capsules" or "7 days".
+function leadingNumber(raw: unknown): number | null {
+  if (typeof raw !== "string") return null;
+  const match = LEADING_NUMBER.exec(raw);
+  return match?.[1] ? toNumber(match[1]) : null;
+}
+
+type Range = { low?: number; high?: number };
+
+// Handles "3.5 - 5.0", "< 200" and "> 40". Other shapes return null, so the flag check is skipped.
+export function parseReferenceRange(raw: unknown): Range | null {
+  if (typeof raw !== "string") return null;
+  const text = raw.trim();
+  const between = RANGE_BETWEEN.exec(text);
+  if (between) return { low: toNumber(between[1]!), high: toNumber(between[2]!) };
+  const oneSided = RANGE_ONE_SIDED.exec(text);
+  if (!oneSided) return null;
+  const operator = oneSided[1] ?? oneSided[3];
+  const bound = toNumber(oneSided[2] ?? oneSided[4]!);
+  return operator === "<" || operator === "≤" ? { high: bound } : { low: bound };
+}
+
+function deriveFlag(value: number, range: Range): "low" | "high" | "normal" {
+  if (range.low !== undefined && value < range.low) return "low";
+  if (range.high !== undefined && value > range.high) return "high";
+  return "normal";
+}
 
 function checkDates(fields: Fields, errors: string[]): void {
   for (const name of DATE_FIELDS) {
@@ -73,7 +115,7 @@ function checkAmounts(fields: Fields, errors: string[]): void {
       const value = item[key];
       if (value !== null && value !== undefined && !isPositiveAmount(value)) {
         errors.push(`invalid_amount: items[${index}].${key} must be a positive number, got ${String(value)}`);
-        item[key] = null;
+        invalidateRow(item, key);
       }
     }
   });
@@ -106,12 +148,44 @@ function checkItemTotals(fields: Fields, errors: string[]): void {
   }
 }
 
+function checkTestFlags(items: Items, errors: string[]): void {
+  items.forEach((test, index) => {
+    const range = parseReferenceRange(test.reference_range);
+    const value = leadingNumber(test.result);
+    if (!range || value === null || typeof test.flag !== "string") return;
+    const expected = deriveFlag(value, range);
+    if (test.flag !== expected) {
+      errors.push(
+        `flag_mismatch: tests[${index}] "${String(test.test_name)}" is flagged ${test.flag}, but result ${String(test.result)} against reference ${String(test.reference_range)} is ${expected}`,
+      );
+      invalidateRow(test, "flag");
+    }
+  });
+}
+
+// Only checks that a printed number is positive. Free text such as "one box" is left alone.
+function checkPositiveCount(medications: Items, key: "quantity" | "duration", errors: string[]): void {
+  medications.forEach((row, index) => {
+    const count = leadingNumber(row[key]);
+    if (count !== null && count <= 0) {
+      errors.push(`invalid_${key}: medications[${index}].${key} must be positive, got "${String(row[key])}"`);
+      invalidateRow(row, key);
+    }
+  });
+}
+
 export function validateFields(type: DocumentType, input: Fields): { fields: Fields; errors: string[] } {
   const fields = structuredClone(input);
   const errors: string[] = [];
 
   checkDates(fields, errors);
   if (type === "discharge_summary") checkDateOrder(fields, errors);
+  if (type === "lab_report" && Array.isArray(fields.tests?.value)) checkTestFlags(fields.tests.value as Items, errors);
+  if (type === "prescription" && Array.isArray(fields.medications?.value)) {
+    const medications = fields.medications.value as Items;
+    checkPositiveCount(medications, "quantity", errors);
+    checkPositiveCount(medications, "duration", errors);
+  }
   if (type === "receipt") {
     checkAmounts(fields, errors);
     const items = fields.items?.value;

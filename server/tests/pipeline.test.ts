@@ -82,3 +82,34 @@ describe("runPipeline", () => {
     expect(calls.classified).toBe(0);
   });
 });
+
+describe("review flag and row confidence", () => {
+  test("classification below the threshold sets needs_review", async () => {
+    const { llm } = fakeLlm({ document_type: "receipt", confidence: 0.55 }, {});
+    expect((await runPipeline(PNG, llm, 10)).needs_review).toBe(true);
+  });
+
+  test("classification at or above the threshold does not set needs_review", async () => {
+    const { llm } = fakeLlm({ document_type: "receipt", confidence: 0.7 }, {});
+    expect((await runPipeline(PNG, llm, 10)).needs_review).toBe(false);
+  });
+
+  test("a list's confidence cannot exceed its weakest row", async () => {
+    const { llm } = fakeLlm(
+      { document_type: "receipt", confidence: 0.9 },
+      {
+        items: field(
+          [
+            { description: "a", quantity: 1, unit_price: 100, total: 100, confidence: 0.9 },
+            { description: "b", quantity: 1, unit_price: 200, total: 200, confidence: 0.5 },
+          ],
+          0.92,
+        ),
+        grand_total: field(300),
+      },
+    );
+    const result = await runPipeline(PNG, llm, 10);
+    expect(result.fields.items?.confidence).toBe(0.5);
+    expect((result.fields.items?.value as Array<{ confidence: number }>)[1]!.confidence).toBe(0.5);
+  });
+});

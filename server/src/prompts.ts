@@ -39,7 +39,7 @@ Hard rules:
 2. Copy text verbatim: keep the original spelling, casing and diacritics. Do not translate.
 3. Dates: output YYYY-MM-DD. If the day, month or year is missing or ambiguous (for example 03/04/2026 could be 3 April or 4 March), use the most likely reading and keep confidence at or below 0.60. If the printed date is impossible (for example 31/02/2026), output it exactly as printed so validation can flag it.
 4. Numbers: output plain JSON numbers with a dot as decimal separator and no thousands separators (1,050,000 -> 1050000). Drop currency symbols.
-5. Lists: include every row. Do not merge or skip rows. If a row is partly unreadable, keep the readable parts and set the rest to null.
+5. Lists: include every row. Do not merge or skip rows. If a row is partly unreadable, keep the readable parts and set the rest to null. Give each row its own confidence, judged from that row's text alone, so one smudged line does not lower the clear ones. The list's own confidence should be no higher than its lowest row.
 6. Lab flags: use the printed flag if present. Otherwise derive it from the result and reference range (below lower bound -> low, above upper bound -> high, else normal) and keep confidence at or below 0.85. If the result or range is missing, use null.
 7. List values hold only the item's own text. Leave out dates, dates in brackets, and notes printed next to the item unless they are part of its name.
 8. Medication dosage is the strength of one unit, as printed next to the drug name. Do not use the number of units taken per dose. Example: "Ibuprofen 200 mg tablet - take 1 tablet twice daily" -> dosage "200 mg", not "1 tablet".

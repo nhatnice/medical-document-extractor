@@ -3,6 +3,8 @@ import { z } from "zod";
 export const DOCUMENT_TYPES = ["receipt", "discharge_summary", "lab_report", "prescription"] as const;
 export type DocumentType = (typeof DOCUMENT_TYPES)[number];
 
+const ROW_CONFIDENCE = z.number().min(0).max(1).describe("Confidence for this row alone, 0.0 to 1.0");
+
 const FIELD_SCHEMAS: Record<DocumentType, Record<string, z.ZodType>> = {
   receipt: {
     hospital_name: z.string().describe("Name of the hospital or clinic that issued the bill"),
@@ -15,6 +17,7 @@ const FIELD_SCHEMAS: Record<DocumentType, Record<string, z.ZodType>> = {
           quantity: z.number().nullable().describe("Quantity as a plain number"),
           unit_price: z.number().nullable().describe("Price per unit as a plain number"),
           total: z.number().nullable().describe("Line total as a plain number"),
+          confidence: ROW_CONFIDENCE,
         }),
       )
       .describe("One entry per line item, in document order"),
@@ -51,6 +54,7 @@ const FIELD_SCHEMAS: Record<DocumentType, Record<string, z.ZodType>> = {
             .enum(["normal", "high", "low"])
             .nullable()
             .describe("Printed flag, or derived from result versus reference range"),
+          confidence: ROW_CONFIDENCE,
         }),
       )
       .describe("One entry per test row, in document order"),
@@ -67,6 +71,7 @@ const FIELD_SCHEMAS: Record<DocumentType, Record<string, z.ZodType>> = {
           frequency: z.string().nullable().describe("How often to take it, e.g. Twice daily"),
           duration: z.string().nullable().describe("Length of treatment; null if not written"),
           quantity: z.string().nullable().describe("Amount dispensed as printed, e.g. 21 capsules"),
+          confidence: ROW_CONFIDENCE,
         }),
       )
       .describe("One entry per medication, in document order"),
