@@ -18,4 +18,5 @@ COPY --from=build /app/server ./server
 COPY --from=build /app/app/dist ./app/dist
 WORKDIR /app/server
 EXPOSE 3000
+USER bun
 CMD ["bun", "index.ts"]

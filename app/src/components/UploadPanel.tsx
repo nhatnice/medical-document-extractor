@@ -6,7 +6,9 @@ type Props = {
   onReject: (message: string) => void
 }
 
-const ACCEPTED = /^(application\/pdf|image\/.+)$/
+// Matches the formats the server accepts.
+const ACCEPTED = /^(application\/pdf|image\/(png|jpeg|webp))$/
+const MAX_BYTES = 20 * 1024 * 1024
 
 export function UploadPanel({ disabled, onFile, onReject }: Props) {
   const input = useRef<HTMLInputElement>(null)
@@ -14,7 +16,11 @@ export function UploadPanel({ disabled, onFile, onReject }: Props) {
   function handle(file: File | undefined) {
     if (!file) return
     if (!ACCEPTED.test(file.type)) {
-      onReject('Only PDF or image files are accepted.')
+      onReject('Only PDF, PNG, JPEG or WEBP files are accepted.')
+      return
+    }
+    if (file.size > MAX_BYTES) {
+      onReject('File exceeds 20 MB.')
       return
     }
     onFile(file)
@@ -44,7 +50,7 @@ export function UploadPanel({ disabled, onFile, onReject }: Props) {
         ref={input}
         type="file"
         hidden
-        accept="application/pdf,image/*"
+        accept="application/pdf,image/png,image/jpeg,image/webp"
         onClick={(e) => e.stopPropagation()}
         onChange={(e) => {
           handle(e.target.files?.[0])

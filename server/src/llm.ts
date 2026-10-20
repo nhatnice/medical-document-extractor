@@ -7,6 +7,8 @@ import type { PageImage } from "./render";
 import { classifySchema, extractionSchema, type DocumentType } from "./schemas";
 import type { Fields } from "./validate";
 
+const LLM_TIMEOUT_MS = 60_000;
+
 export function createModel(config: Config) {
   const provider = createOpenAICompatible({
     name: "llm",
@@ -33,6 +35,7 @@ export async function classifyDocument(model: Model, pages: PageImage[]) {
   const { output } = await generateText({
     model,
     temperature: 0,
+    abortSignal: AbortSignal.timeout(LLM_TIMEOUT_MS),
     system: withSchema(CLASSIFY_SYSTEM, classifySchema),
     output: Output.object({ schema: classifySchema }),
     messages: [
@@ -49,6 +52,7 @@ export async function extractFields(model: Model, pages: PageImage[], type: Docu
   const { output } = await generateText({
     model,
     temperature: 0,
+    abortSignal: AbortSignal.timeout(LLM_TIMEOUT_MS),
     system: withSchema(extractSystem(type), extractionSchema(type)),
     output: Output.object({ schema: extractionSchema(type) }),
     messages: [

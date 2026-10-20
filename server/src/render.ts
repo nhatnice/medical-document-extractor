@@ -13,6 +13,8 @@ export class InputError extends Error {
 }
 
 const RENDER_SCALE = 2;
+// Bounds canvas memory when a PDF declares an enormous page size.
+const MAX_PAGE_PIXELS = 25_000_000;
 
 function startsWith(bytes: Uint8Array, signature: number[]): boolean {
   return signature.every((byte, index) => bytes[index] === byte);
@@ -32,7 +34,10 @@ export function sniffMediaType(bytes: Uint8Array): string | null {
 
 async function renderPdf(bytes: Uint8Array, maxPages: number): Promise<PageImage[]> {
   const task = pdfjs.getDocument({ data: bytes, useSystemFonts: true });
-  const doc = await task.promise;
+  const doc = await task.promise.catch(async () => {
+    await task.destroy();
+    throw new InputError("Could not read the PDF. It may be corrupt or password-protected.", 422);
+  });
   try {
     if (doc.numPages > maxPages) {
       throw new InputError(`PDF has ${doc.numPages} pages; the limit is ${maxPages}.`);
@@ -41,7 +46,9 @@ async function renderPdf(bytes: Uint8Array, maxPages: number): Promise<PageImage
     const pages: PageImage[] = [];
     for (let number = 1; number <= doc.numPages; number++) {
       const page = await doc.getPage(number);
-      const viewport = page.getViewport({ scale: RENDER_SCALE });
+      const base = page.getViewport({ scale: 1 });
+      const scale = Math.min(RENDER_SCALE, Math.sqrt(MAX_PAGE_PIXELS / (base.width * base.height)));
+      const viewport = page.getViewport({ scale });
       const canvas = createCanvas(Math.ceil(viewport.width), Math.ceil(viewport.height));
       await page.render({
         canvas: canvas as unknown as Parameters<typeof page.render>[0]["canvas"],
