@@ -15,6 +15,8 @@ Rules:
   - 0.60 to 0.85: it has features of two types.
   - below 0.50: the pages are blurry or partial. Still choose the closest type.
 
+Respond with a JSON object containing document_type and confidence.
+
 Example: a page titled "Medication Prescription" with Rx lines such as "Take 1 tablet twice daily" -> prescription, confidence 0.95.`;
 
 const TYPE_HINTS: Record<DocumentType, string> = {
@@ -27,6 +29,8 @@ const TYPE_HINTS: Record<DocumentType, string> = {
 export function extractSystem(type: DocumentType): string {
   return `You extract fields from a ${type} given as page images. Fill every field in the schema.
 ${TYPE_HINTS[type]}
+
+Respond with a JSON object with one key, "fields".
 
 Hard rules:
 1. Never invent. If a field is not visible on the document, return value null with confidence 0.0.
