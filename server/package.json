@@ -8,5 +8,12 @@
   },
   "peerDependencies": {
     "typescript": "^7"
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.74",
+    "@napi-rs/canvas": "^1.0.11",
+    "ai": "^7.0.146",
+    "pdfjs-dist": "^6.4.299",
+    "zod": "^4.6.7"
   }
 }
