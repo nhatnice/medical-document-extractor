@@ -1,4 +1,4 @@
-import { classifyDocument, extractFields, type Model } from "./llm";
+import type { LlmCalls } from "./llm";
 import { loadPages } from "./render";
 import type { DocumentType } from "./schemas";
 import { validateFields, type Fields } from "./validate";
@@ -33,10 +33,10 @@ function normalizeFields(raw: Fields): Fields {
   return fields;
 }
 
-export async function runPipeline(bytes: Uint8Array, model: Model, maxPages: number): Promise<ExtractionResult> {
+export async function runPipeline(bytes: Uint8Array, llm: LlmCalls, maxPages: number): Promise<ExtractionResult> {
   const pages = await loadPages(bytes, maxPages);
-  const classification = await classifyDocument(model, pages);
-  const raw = await extractFields(model, pages, classification.document_type);
+  const classification = await llm.classify(pages);
+  const raw = await llm.extract(pages, classification.document_type);
   const { fields, errors } = validateFields(classification.document_type, normalizeFields(raw));
 
   return {

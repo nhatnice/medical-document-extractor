@@ -60,3 +60,15 @@ export async function extractFields(model: Model, pages: PageImage[], type: Docu
   });
   return output.fields as Fields;
 }
+
+export type LlmCalls = {
+  classify: (pages: PageImage[]) => Promise<{ document_type: DocumentType; confidence: number }>;
+  extract: (pages: PageImage[], type: DocumentType) => Promise<Fields>;
+};
+
+export function bindLlm(model: Model): LlmCalls {
+  return {
+    classify: (pages) => classifyDocument(model, pages),
+    extract: (pages, type) => extractFields(model, pages, type),
+  };
+}

@@ -1,12 +1,12 @@
 import { loadConfig } from "./src/config";
-import { createModel } from "./src/llm";
+import { bindLlm, createModel } from "./src/llm";
 import { InputError } from "./src/render";
 import { runPipeline } from "./src/pipeline";
 
 const MAX_FILE_BYTES = 20 * 1024 * 1024;
 
 const config = loadConfig();
-const model = createModel(config);
+const llm = bindLlm(createModel(config));
 
 async function handleExtract(req: Request): Promise<Response> {
   const form = await req.formData().catch(() => null);
@@ -19,7 +19,7 @@ async function handleExtract(req: Request): Promise<Response> {
   }
 
   try {
-    const result = await runPipeline(new Uint8Array(await file.arrayBuffer()), model, config.maxPages);
+    const result = await runPipeline(new Uint8Array(await file.arrayBuffer()), llm, config.maxPages);
     return Response.json(result);
   } catch (error) {
     if (error instanceof InputError) {
